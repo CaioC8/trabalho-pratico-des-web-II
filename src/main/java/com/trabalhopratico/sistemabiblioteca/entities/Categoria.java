@@ -45,4 +45,12 @@ public class Categoria {
   public void setNome(String nome) {
     this.nome = nome;
   }
+
+  public List<Livro> getLivros() {
+    return livros;
+  }
+
+  public void setLivros(List<Livro> livros) {
+    this.livros = livros;
+  }
 }
