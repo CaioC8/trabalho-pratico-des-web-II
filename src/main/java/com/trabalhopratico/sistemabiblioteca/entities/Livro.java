@@ -19,12 +19,14 @@ public class Livro {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column private String titulo;
+  @Column(nullable = false)
+  private String titulo;
 
-  @Column private String isbn;
+  @Column(nullable = false, unique = true)
+  private String isbn;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "categoria_id")
+  @JoinColumn(name = "categoria_id", nullable = false)
   private Categoria categoria;
 
   public Long getId() {
