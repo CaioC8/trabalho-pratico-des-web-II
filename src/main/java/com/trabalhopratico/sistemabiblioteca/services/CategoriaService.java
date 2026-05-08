@@ -1,5 +1,6 @@
 package com.trabalhopratico.sistemabiblioteca.services;
 
+import com.trabalhopratico.sistemabiblioteca.dtos.AtualizarCategoriaDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.CategoriaCompletoDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.CriarCategoriaDto;
 import com.trabalhopratico.sistemabiblioteca.entities.Categoria;
@@ -33,14 +34,25 @@ public class CategoriaService {
   }
 
   public CategoriaCompletoDto getById(Long id) {
-    Categoria categoria =
-        this.categoriaRepository
-            .findById(id)
-            .orElseThrow(
-                () ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
+    Categoria categoria = this.findById(id);
 
     return CategoriaCompletoDto.toCategoriaCompletoDto(categoria);
+  }
+
+  public CategoriaCompletoDto update(Long id, AtualizarCategoriaDto categoriaDto) {
+    Categoria categoria = this.findById(id);
+
+    categoriaDto.nome().ifPresent(categoria::setNome);
+
+    Categoria categoriaAtualizada = this.categoriaRepository.save(categoria);
+
+    return CategoriaCompletoDto.toCategoriaCompletoDto(categoriaAtualizada);
+  }
+
+  public void delete(Long id) {
+    Categoria categoria = this.findById(id);
+
+    this.categoriaRepository.delete(categoria);
   }
 
   public Categoria findById(Long id) {

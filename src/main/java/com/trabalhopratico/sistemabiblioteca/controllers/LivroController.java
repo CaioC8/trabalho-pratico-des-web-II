@@ -46,6 +46,27 @@ public class LivroController {
     return ResponseEntity.status(HttpStatus.OK).body(livro);
   }
 
+  @GetMapping("/titulo/{titulo}")
+  public ResponseEntity<LivroCompletoDto> getByTitulo(@PathVariable String titulo) {
+    LivroCompletoDto livro = this.livroService.getByTitulo(titulo);
+
+    return ResponseEntity.status(HttpStatus.OK).body(livro);
+  }
+
+  @GetMapping("/busca/{titulo}")
+  public ResponseEntity<List<LivroCompletoDto>> getByParteDoTitulo(@PathVariable String titulo) {
+    List<LivroCompletoDto> livros = this.livroService.getByTituloParcial(titulo);
+
+    return ResponseEntity.status(HttpStatus.OK).body(livros);
+  }
+
+  @GetMapping("categoria/{categoriaId}")
+  public ResponseEntity<List<LivroCompletoDto>> getByTitulo(@PathVariable Long categoriaId) {
+    List<LivroCompletoDto> livros = this.livroService.getByCategoria(categoriaId);
+
+    return ResponseEntity.status(HttpStatus.OK).body(livros);
+  }
+
   @PatchMapping("/{id}")
   public ResponseEntity<LivroCompletoDto> update(
       @PathVariable Long id, @RequestBody AtualizarLivroDto livroDto) {

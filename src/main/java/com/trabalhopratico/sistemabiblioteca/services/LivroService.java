@@ -35,27 +35,43 @@ public class LivroService {
   }
 
   public List<LivroCompletoDto> getAll() {
-    return this.livroRepository.findAll().stream()
-        .map((livro) -> LivroCompletoDto.toLivroCompletoDto(livro))
-        .toList();
+    List<Livro> livors = this.livroRepository.findAll();
+
+    return livors.stream().map((livro) -> LivroCompletoDto.toLivroCompletoDto(livro)).toList();
   }
 
   public LivroCompletoDto getById(Long id) {
+    Livro livro = this.findById(id);
+
+    return LivroCompletoDto.toLivroCompletoDto(livro);
+  }
+
+  public LivroCompletoDto getByTitulo(String titulo) {
     Livro livro =
         this.livroRepository
-            .findById(id)
+            .findByTitulo(titulo)
             .orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado."));
 
     return LivroCompletoDto.toLivroCompletoDto(livro);
   }
 
+  public List<LivroCompletoDto> getByTituloParcial(String titulo) {
+    List<Livro> livros = this.livroRepository.findByTituloContainingIgnoreCase(titulo);
+
+    return livros.stream().map((livro) -> LivroCompletoDto.toLivroCompletoDto(livro)).toList();
+  }
+
+  public List<LivroCompletoDto> getByCategoria(Long categoriaId) {
+    Categoria categoria = this.categoriaService.findById(categoriaId);
+
+    List<Livro> livros = this.livroRepository.findByCategoria(categoria);
+
+    return livros.stream().map((livro) -> LivroCompletoDto.toLivroCompletoDto(livro)).toList();
+  }
+
   public LivroCompletoDto update(Long id, AtualizarLivroDto livroDto) {
-    Livro livro =
-        this.livroRepository
-            .findById(id)
-            .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado."));
+    Livro livro = this.findById(id);
 
     livroDto.titulo().ifPresent(livro::setTitulo);
 
@@ -75,12 +91,15 @@ public class LivroService {
   }
 
   public void delete(Long id) {
-    Livro livro =
-        this.livroRepository
-            .findById(id)
-            .orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado."));
+    Livro livro = this.findById(id);
 
     this.livroRepository.delete(livro);
+  }
+
+  public Livro findById(Long id) {
+    return this.livroRepository
+        .findById(id)
+        .orElseThrow(
+            () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado."));
   }
 }

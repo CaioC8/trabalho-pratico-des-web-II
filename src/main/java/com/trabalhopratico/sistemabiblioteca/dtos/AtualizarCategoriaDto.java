@@ -1,3 +1,5 @@
 package com.trabalhopratico.sistemabiblioteca.dtos;
 
-public record AtualizarCategoriaDto(String nome) {}
+import java.util.Optional;
+
+public record AtualizarCategoriaDto(Optional<String> nome) {}
