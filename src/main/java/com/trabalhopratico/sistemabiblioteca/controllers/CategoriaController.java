@@ -1,9 +1,11 @@
 package com.trabalhopratico.sistemabiblioteca.controllers;
 
+import com.trabalhopratico.sistemabiblioteca.annotations.MensagemResponse;
 import com.trabalhopratico.sistemabiblioteca.dtos.AtualizarCategoriaDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.CategoriaCompletoDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.CriarCategoriaDto;
 import com.trabalhopratico.sistemabiblioteca.services.CategoriaService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,9 @@ public class CategoriaController {
   }
 
   @PostMapping
-  public ResponseEntity<CategoriaCompletoDto> create(@RequestBody CriarCategoriaDto categoriaDto) {
+  @MensagemResponse("Categoria criada com sucesso.")
+  public ResponseEntity<CategoriaCompletoDto> create(
+      @RequestBody @Valid CriarCategoriaDto categoriaDto) {
     CategoriaCompletoDto categoria = this.categoriaService.create(categoriaDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
@@ -47,8 +51,9 @@ public class CategoriaController {
   }
 
   @PatchMapping("/{id}")
+  @MensagemResponse("Categoria atualizada com sucesso.")
   public ResponseEntity<CategoriaCompletoDto> update(
-      @PathVariable Long id, @RequestBody AtualizarCategoriaDto categoriaDto) {
+      @PathVariable Long id, @RequestBody @Valid AtualizarCategoriaDto categoriaDto) {
     CategoriaCompletoDto categoria = this.categoriaService.update(id, categoriaDto);
 
     return ResponseEntity.status(HttpStatus.OK).body(categoria);

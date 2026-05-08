@@ -1,9 +1,11 @@
 package com.trabalhopratico.sistemabiblioteca.controllers;
 
+import com.trabalhopratico.sistemabiblioteca.annotations.MensagemResponse;
 import com.trabalhopratico.sistemabiblioteca.dtos.AtualizarLivroDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.CriarLivroDto;
 import com.trabalhopratico.sistemabiblioteca.dtos.LivroCompletoDto;
 import com.trabalhopratico.sistemabiblioteca.services.LivroService;
+import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,8 @@ public class LivroController {
   }
 
   @PostMapping
-  public ResponseEntity<LivroCompletoDto> create(@RequestBody CriarLivroDto livroDto) {
+  @MensagemResponse("Livro criado com sucesso.")
+  public ResponseEntity<LivroCompletoDto> create(@RequestBody @Valid CriarLivroDto livroDto) {
     LivroCompletoDto livroCriado = this.livroService.create(livroDto);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(livroCriado);
@@ -68,8 +71,9 @@ public class LivroController {
   }
 
   @PatchMapping("/{id}")
+  @MensagemResponse("Livro atualizado com sucesso.")
   public ResponseEntity<LivroCompletoDto> update(
-      @PathVariable Long id, @RequestBody AtualizarLivroDto livroDto) {
+      @PathVariable Long id, @RequestBody @Valid AtualizarLivroDto livroDto) {
     LivroCompletoDto livro = this.livroService.update(id, livroDto);
 
     return ResponseEntity.status(HttpStatus.OK).body(livro);
