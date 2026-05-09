@@ -21,7 +21,8 @@ public class Categoria {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column private String nome;
+  @Column(nullable = false, unique = true)
+  private String nome;
 
   @OneToMany(
       mappedBy = "categoria",
@@ -44,5 +45,13 @@ public class Categoria {
 
   public void setNome(String nome) {
     this.nome = nome;
+  }
+
+  public List<Livro> getLivros() {
+    return livros;
+  }
+
+  public void setLivros(List<Livro> livros) {
+    this.livros = livros;
   }
 }
