@@ -29,7 +29,7 @@ O repositório está divido nas branches:
 O banco de dados é foi criado na raiz do projeto em `./data/testdb.mv.db`. Segue a URL para se conectar ao banco no console do h2:
 
 ```bash
-jdbc:h2:file:./data/testdb
+jdbc:h2:mem:testdb
 ```
 
 Ao executar o projeto, um seed será executado, estando pronto para uso.
